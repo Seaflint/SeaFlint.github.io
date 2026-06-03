@@ -9,10 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<script src="image-slot.js"></script>
 <script id="tailwind-config">
   tailwind.config = {
-    darkMode: "class",
     theme: {
       extend: {
         colors: {
@@ -21,7 +19,6 @@
           "surface-container-lowest": "#ffffff",
           "surface-container-low": "#f8fafc",
           "surface-container": "#f1f5f9",
-          "surface-container-high": "#e9eef4",
           "surface-variant": "#e8ecf2",
           "on-surface": "#1b1c1f",
           "on-surface-variant": "#757681",
@@ -29,23 +26,16 @@
           "outline-variant": "#e2e8f0",
           "primary": "#2563eb",
           "on-primary": "#ffffff",
-          "primary-container": "#dbe5ff",
-          "on-primary-container": "#0a1f52",
           "primary-fixed": "#dbe5ff",
-          "secondary": "#475569",
           "secondary-container": "#f1f5f9",
           "on-secondary-container": "#1e293b",
-          "tertiary": "#bc4800",
-          "on-tertiary": "#ffffff",
-          "tertiary-container": "#ffdbc9",
           "inverse-surface": "#2d2f39",
-          "inverse-on-surface": "#f1f5f9",
-          "error": "#c0362c"
+          "inverse-on-surface": "#f1f5f9"
         },
         borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "1rem" },
         spacing: {
-          "base": "4px", "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px",
-          "gutter": "24px", "xl": "32px", "2xl": "48px", "3xl": "64px", "container-max": "1280px"
+          "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px",
+          "gutter": "24px", "xl": "32px", "2xl": "48px", "3xl": "64px"
         },
         fontFamily: { "h1": ["Inter"], "h2": ["Inter"], "h3": ["Inter"], "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"] },
         fontSize: {
@@ -70,7 +60,6 @@
   .delay-1 { transition-delay: .12s; } .delay-2 { transition-delay: .24s; } .delay-3 { transition-delay: .36s; }
   body { min-height: 100dvh; }
   [x-cloak] { display: none !important; }
-  image-slot { display: block; width: 100%; height: 100%; }
   .header-hidden { transform: translateY(-180%); }
   .carousel-track { transition: transform .55s cubic-bezier(0.32,0.72,0,1); }
   @media (prefers-reduced-motion: reduce) { .fade-in-up { opacity: 1; transform: none; } .carousel-track { transition: none; } }
@@ -87,11 +76,7 @@
     <div class="hidden lg:flex items-center gap-1">
       <a class="text-on-surface hover:bg-surface-container px-3 h-9 inline-flex items-center rounded-md text-sm font-medium transition-colors" href="#features">Features</a>
       <a class="text-on-surface hover:bg-surface-container px-3 h-9 inline-flex items-center rounded-md text-sm font-medium transition-colors" href="#about">About</a>
-      <a class="text-on-surface hover:bg-surface-container px-3 h-9 inline-flex items-center rounded-md text-sm font-medium transition-colors" href="#dashboard">Preview
-
-
-
-</a>
+      <a class="text-on-surface hover:bg-surface-container px-3 h-9 inline-flex items-center rounded-md text-sm font-medium transition-colors" href="#dashboard">Preview</a>
       <a class="text-on-surface hover:bg-surface-container px-3 h-9 inline-flex items-center rounded-md text-sm font-medium transition-colors" href="#team">Team</a>
     </div>
     <div class="flex items-center gap-2">
@@ -124,10 +109,6 @@
           <a @click="open = false" class="justify-start hover:bg-surface-container px-3 h-11 inline-flex items-center rounded-md text-base font-medium transition-colors" href="#about">About</a>
           <a @click="open = false" class="justify-start hover:bg-surface-container px-3 h-11 inline-flex items-center rounded-md text-base font-medium transition-colors" href="#dashboard">Dashboard</a>
           <a @click="open = false" class="justify-start hover:bg-surface-container px-3 h-11 inline-flex items-center rounded-md text-base font-medium transition-colors" href="#team">Team</a>
-        </div>
-        <div class="mt-auto flex flex-col gap-2 p-4 border-t border-outline-variant">
-          <a @click="open = false" class="h-10 inline-flex items-center justify-center rounded-md border border-outline-variant bg-surface hover:bg-surface-container text-sm font-medium transition-colors" href="#contact">Contact</a>
-          <a @click="open = false" class="h-10 inline-flex items-center justify-center rounded-md bg-primary text-on-primary hover:bg-primary/90 text-sm font-medium transition-colors" href="#contact">Get involved</a>
         </div>
       </aside>
     </div>
@@ -241,7 +222,7 @@
         </div>
         <div class="fade-in-up delay-1 order-1 lg:order-2">
           <div class="relative aspect-[4/3] rounded-xl overflow-hidden border border-outline-variant">
-            <image-slot id="about-hull" fit="cover" shape="rect" placeholder="Drop a hull / biofouling photo"></image-slot>
+            <img src="assets/about-hull.webp" alt="Biofouled hull" class="w-full h-full object-cover" />
             <div class="absolute top-md left-md flex gap-sm">
               <span class="bg-inverse-surface/70 backdrop-blur text-inverse-on-surface text-label-sm px-md py-xs rounded-full">Biofouled hull</span>
               <span class="bg-inverse-surface/70 backdrop-blur text-inverse-on-surface text-label-sm px-md py-xs rounded-full">Increased drag</span>
@@ -271,25 +252,25 @@
             <!-- slide 1 -->
             <div class="w-full flex-shrink-0">
               <div class="relative aspect-[16/9] rounded-2xl overflow-hidden bg-inverse-surface">
-                <image-slot id="dash-1" fit="cover" shape="rect" placeholder="Dashboard · Fleet overview"></image-slot>
+                <img src="assets/dash-1.webp" alt="Dashboard – Fleet overview" class="w-full h-full object-cover" />
               </div>
             </div>
             <!-- slide 2 -->
             <div class="w-full flex-shrink-0">
               <div class="relative aspect-[16/9] rounded-2xl overflow-hidden bg-inverse-surface">
-                <image-slot id="dash-2" fit="cover" shape="rect" placeholder="Dashboard · Performance trend"></image-slot>
+                <img src="assets/dash-2.webp" alt="Dashboard – Performance trend" class="w-full h-full object-cover" />
               </div>
             </div>
             <!-- slide 3 -->
             <div class="w-full flex-shrink-0">
               <div class="relative aspect-[16/9] rounded-2xl overflow-hidden bg-inverse-surface">
-                <image-slot id="dash-3" fit="cover" shape="rect" placeholder="Dashboard · Cleaning recommendation"></image-slot>
+                <img src="assets/dash-3.webp" alt="Dashboard – Cleaning recommendation" class="w-full h-full object-cover" />
               </div>
             </div>
             <!-- slide 4 -->
             <div class="w-full flex-shrink-0">
               <div class="relative aspect-[16/9] rounded-2xl overflow-hidden bg-inverse-surface">
-                <image-slot id="dash-4" fit="cover" shape="rect" placeholder="Dashboard · Vessel detail"></image-slot>
+                <img src="assets/dash-4.webp" alt="Dashboard – Vessel detail" class="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -335,7 +316,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-lg">
         <!-- member template repeated -->
         <div class="group relative overflow-hidden rounded-xl bg-surface-variant aspect-[3/4] fade-in-up">
-          <image-slot id="team-1" fit="cover" shape="rect" placeholder="Headshot"></image-slot>
+          <img src="assets/team-1.webp" alt="Team member" class="w-full h-full object-cover" />
           <div class="absolute inset-x-0 bottom-0 p-lg bg-gradient-to-t from-black/80 to-transparent translate-y-[calc(100%-72px)] group-hover:translate-y-0 transition-transform duration-300">
             <h4 class="text-white font-h3 text-h3">Team Member</h4>
             <p class="text-white/80 font-body-sm">PhD Student
@@ -344,7 +325,7 @@ University of Southampton </p>
           </div>
         </div>
         <div class="group relative overflow-hidden rounded-xl bg-surface-variant aspect-[3/4] fade-in-up delay-1">
-          <image-slot id="team-2" fit="cover" shape="rect" placeholder="Headshot"></image-slot>
+          <img src="assets/team-2.webp" alt="Julian Wharton" class="w-full h-full object-cover" />
           <div class="absolute inset-x-0 bottom-0 p-lg bg-gradient-to-t from-black/80 to-transparent translate-y-[calc(100%-72px)] group-hover:translate-y-0 transition-transform duration-300">
             <h4 class="text-white font-h3 text-h3">Julian Wharton</h4>
             <p class="text-white/80 font-body-sm">Professor of Mechanical Engineering
@@ -353,7 +334,7 @@ University of Southampton</p>
           </div>
         </div>
         <div class="group relative overflow-hidden rounded-xl bg-surface-variant aspect-[3/4] fade-in-up delay-2">
-          <image-slot id="team-3" fit="cover" shape="rect" placeholder="Headshot"></image-slot>
+          <img src="assets/team-3.webp" alt="Marah Thormann" class="w-full h-full object-cover" />
           <div class="absolute inset-x-0 bottom-0 p-lg bg-gradient-to-t from-black/80 to-transparent translate-y-[calc(100%-72px)] group-hover:translate-y-0 transition-transform duration-300">
             <h4 class="text-white font-h3 text-h3">Marah Thormann</h4>
             <p class="text-white/80 font-body-sm">PhD Student
@@ -362,7 +343,7 @@ University of Southampton </p>
           </div>
         </div>
         <div class="group relative overflow-hidden rounded-xl bg-surface-variant aspect-[3/4] fade-in-up">
-          <image-slot id="team-4" fit="cover" shape="rect" placeholder="Headshot"></image-slot>
+          <img src="assets/team-4.webp" alt="Alain Zemkoho" class="w-full h-full object-cover" />
           <div class="absolute inset-x-0 bottom-0 p-lg bg-gradient-to-t from-black/80 to-transparent translate-y-[calc(100%-72px)] group-hover:translate-y-0 transition-transform duration-300">
             <h4 class="text-white font-h3 text-h3">Alain Zemkoho</h4>
             <p class="text-white/80 font-body-sm">Professor of Mathematical Optimization
@@ -443,8 +424,6 @@ University of Southampton</p>
     <div class="flex items-center gap-sm">
       <img src="assets/logo.png" alt="SeaFlint" class="h-10 w-auto" />
     </div>
-    <p class="font-body-sm text-on-surface-variant max-w-xl">
-</p>
     <p class="font-body-sm text-on-surface-variant">© 2026 SeaFlint</p>
   </div>
 </footer>
@@ -494,15 +473,6 @@ University of Southampton</p>
     if (!ticking) { window.requestAnimationFrame(onHeaderScroll); ticking = true; }
   }, { passive: true });
 </script>
-
-<template id="__bundler_thumbnail">
-  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <rect width="100" height="100" fill="#2563eb"/>
-    <path d="M0 66 Q 25 56 50 66 T 100 66 V100 H0 Z" fill="#dbe5ff" opacity="0.7"/>
-    <path d="M0 78 Q 25 70 50 78 T 100 78 V100 H0 Z" fill="#ffffff" opacity="0.8"/>
-    <text x="50" y="42" fill="#fff" font-family="Inter, sans-serif" font-size="13" font-weight="800" text-anchor="middle">SeaFlint</text>
-  </svg>
-</template>
 
 </body>
 </html>
