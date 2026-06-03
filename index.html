@@ -295,7 +295,7 @@
         ][currentIndex]"></p>
         <div class="flex items-center gap-sm">
           <template x-for="i in total" :key="i">
-            <button @click="currentIndex = i - 1; stop()" class="rounded-full transition-all duration-300" :class="currentIndex === i - 1 ? 'w-6 h-2 bg-primary' : 'w-2 h-2 bg-outline-variant hover:bg-outline'" :aria-label="`Go to slide ${i}`"></button>
+            <button @click="currentIndex = i - 1; start()" class="rounded-full transition-all duration-300" :class="currentIndex === i - 1 ? 'w-6 h-2 bg-primary' : 'w-2 h-2 bg-outline-variant hover:bg-outline'" :aria-label="`Go to slide ${i}`"></button>
           </template>
         </div>
       </div>
@@ -434,9 +434,9 @@ University of Southampton</p>
       currentIndex: 0,
       total: 4,
       timer: null,
-      next() { this.currentIndex = this.currentIndex >= this.total - 1 ? 0 : this.currentIndex + 1; if (this.timer) this.start(); },
-      prev() { this.currentIndex = this.currentIndex <= 0 ? this.total - 1 : this.currentIndex - 1; if (this.timer) this.start(); },
-      start() { this.stop(); this.timer = setInterval(() => this.next(), 2000); },
+      next() { this.currentIndex = this.currentIndex >= this.total - 1 ? 0 : this.currentIndex + 1; },
+      prev() { this.currentIndex = this.currentIndex <= 0 ? this.total - 1 : this.currentIndex - 1; },
+      start() { this.stop(); this.timer = setInterval(() => this.next(), 4000); },
       stop() { if (this.timer) { clearInterval(this.timer); this.timer = null; } },
       pause() { this.stop(); },
       resume() { this.start(); },
