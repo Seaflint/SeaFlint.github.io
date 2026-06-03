@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>SeaFlint — Smarter hull cleaning, powered by machine learning</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="image-slot.js"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#ffffff",
+          "background": "#ffffff",
+          "surface-container-lowest": "#ffffff",
+          "surface-container-low": "#f8fafc",
+          "surface-container": "#f1f5f9",
+          "surface-container-high": "#e9eef4",
+          "surface-variant": "#e8ecf2",
+          "on-surface": "#1b1c1f",
+          "on-surface-variant": "#757681",
+          "outline": "#9aa0ab",
+          "outline-variant": "#e2e8f0",
+          "primary": "#2563eb",
+          "on-primary": "#ffffff",
+          "primary-container": "#dbe5ff",
+          "on-primary-container": "#0a1f52",
+          "primary-fixed": "#dbe5ff",
+          "secondary": "#475569",
+          "secondary-container": "#f1f5f9",
+          "on-secondary-container": "#1e293b",
+          "tertiary": "#bc4800",
+          "on-tertiary": "#ffffff",
+          "tertiary-container": "#ffdbc9",
+          "inverse-surface": "#2d2f39",
+          "inverse-on-surface": "#f1f5f9",
+          "error": "#c0362c"
+        },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "1rem" },
+        spacing: {
+          "base": "4px", "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px",
+          "gutter": "24px", "xl": "32px", "2xl": "48px", "3xl": "64px", "container-max": "1280px"
+        },
+        fontFamily: { "h1": ["Inter"], "h2": ["Inter"], "h3": ["Inter"], "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"] },
+        fontSize: {
+          "h1": ["52px", { "lineHeight": "58px", "letterSpacing": "-0.025em", "fontWeight": "800" }],
+          "h1-mobile": ["34px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+          "h2": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+          "h3": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+          "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+          "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+          "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+          "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+          "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; vertical-align: middle; }
+  .fade-in-up { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .8s ease; }
+  .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+  .delay-1 { transition-delay: .12s; } .delay-2 { transition-delay: .24s; } .delay-3 { transition-delay: .36s; }
+  body { min-height: 100dvh; }
+  [x-cloak] { display: none !important; }
+  image-slot { display: block; width: 100%; height: 100%; }
+  .header-hidden { transform: translateY(-180%); }
+  .carousel-track { transition: transform .55s cubic-bezier(0.32,0.72,0,1); }
+  @media (prefers-reduced-motion: reduce) { .fade-in-up { opacity: 1; transform: none; } .carousel-track { transition: none; } }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden">
+
+<!-- TopAppBar -->
+<header class="fixed top-0 inset-x-0 z-50 w-full border-b transition-all duration-300 ease-out will-change-transform" :class="scrolled ? 'border-outline-variant shadow-lg shadow-black/10 bg-surface/95 supports-[backdrop-filter]:bg-surface/90 backdrop-blur-lg' : 'border-outline-variant/60 bg-surface/90 supports-[backdrop-filter]:bg-surface/80 backdrop-blur-md'" id="header" x-data="{ open: false, scrolled: false }" @scroll.window="scrolled = window.scrollY > 10" x-init="scrolled = window.scrollY > 10">
+  <nav class="mx-auto flex items-center justify-between w-full max-w-7xl px-gutter h-16">
+    <a class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-surface-container duration-100" href="#top">
+      <img src="assets/logo.png" alt="SeaFlint" class="h-12 w-auto" />
+    </a>
+    <div class="hidden lg:flex items-center gap-1">
+      <a class="text-on-surface hover:bg-surface-container px-3 h-9 inline-flex items-center rounded-md text-sm font-medium transition-colors" href="#features">Features</a>
+      <a class="text-on-surface hover:bg-surface-container px-3 h-9 inline-flex items-center rounded-md text-sm font-medium transition-colors" href="#about">About</a>
+      <a class="text-on-surface hover:bg-surface-container px-3 h-9 inline-flex items-center rounded-md text-sm font-medium transition-colors" href="#dashboard">Preview
+
+
+
+</a>
+      <a class="text-on-surface hover:bg-surface-container px-3 h-9 inline-flex items-center rounded-md text-sm font-medium transition-colors" href="#team">Team</a>
+    </div>
+    <div class="flex items-center gap-2">
+      <a class="bg-primary text-on-primary hover:bg-primary/90 h-9 px-4 inline-flex items-center rounded-md text-sm font-medium active:scale-95 transition-all" href="https://seaflint.soton.ac.uk/users/login">Login</a>
+      <button @click="open = !open" class="lg:hidden h-9 w-9 inline-flex items-center justify-center rounded-md border border-outline-variant bg-surface hover:bg-surface-container transition-colors" :aria-expanded="open" aria-controls="mobile-menu" aria-label="Toggle menu">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-on-surface transition-transform ease-in-out duration-300" :class="open ? '-rotate-45' : ''">
+          <path class="transition-all ease-in-out duration-300" :class="open ? '[stroke-dasharray:20_300] [stroke-dashoffset:-32.42px]' : '[stroke-dasharray:12_63]'" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+          <path d="M7 16 27 16"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile sheet -->
+  <template x-teleport="body">
+    <div x-show="open" x-cloak id="mobile-menu">
+      <div x-show="open" x-transition.opacity @click="open = false" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"></div>
+      <aside x-show="open" x-cloak
+        x-transition:enter="transition ease-in-out duration-300" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition ease-in-out duration-200" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"
+        class="fixed inset-y-0 left-0 z-50 flex w-3/4 max-w-sm flex-col border-r border-outline-variant bg-surface/95 backdrop-blur-lg shadow-lg">
+        <div class="flex items-center justify-between p-4 border-b border-outline-variant">
+          <img src="assets/logo.png" alt="SeaFlint" class="h-8 w-auto" />
+          <button @click="open = false" class="h-9 w-9 inline-flex items-center justify-center rounded-full hover:bg-surface-container" aria-label="Close menu">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="grid gap-y-1 overflow-y-auto px-4 pt-6 pb-5">
+          <a @click="open = false" class="justify-start hover:bg-surface-container px-3 h-11 inline-flex items-center rounded-md text-base font-medium transition-colors" href="#features">Features</a>
+          <a @click="open = false" class="justify-start hover:bg-surface-container px-3 h-11 inline-flex items-center rounded-md text-base font-medium transition-colors" href="#about">About</a>
+          <a @click="open = false" class="justify-start hover:bg-surface-container px-3 h-11 inline-flex items-center rounded-md text-base font-medium transition-colors" href="#dashboard">Dashboard</a>
+          <a @click="open = false" class="justify-start hover:bg-surface-container px-3 h-11 inline-flex items-center rounded-md text-base font-medium transition-colors" href="#team">Team</a>
+        </div>
+        <div class="mt-auto flex flex-col gap-2 p-4 border-t border-outline-variant">
+          <a @click="open = false" class="h-10 inline-flex items-center justify-center rounded-md border border-outline-variant bg-surface hover:bg-surface-container text-sm font-medium transition-colors" href="#contact">Contact</a>
+          <a @click="open = false" class="h-10 inline-flex items-center justify-center rounded-md bg-primary text-on-primary hover:bg-primary/90 text-sm font-medium transition-colors" href="#contact">Get involved</a>
+        </div>
+      </aside>
+    </div>
+  </template>
+</header>
+
+<main id="top">
+  <!-- HeroSection -->
+  <section class="relative min-h-[92vh] flex items-center overflow-hidden bg-surface" data-screen-label="Hero">
+    <div class="absolute inset-0 z-0">
+      <img src="assets/hero-bg.jpg" alt="Container ship at sea" class="w-full h-full object-cover object-right-bottom blur-[3px] scale-105" />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/60"></div>
+    </div>
+    <div class="relative z-10 w-full px-gutter max-w-7xl mx-auto text-center">
+      <div class="max-w-2xl mx-auto space-y-xl">
+        <div class="space-y-md">
+          <h1 class="font-h1 text-h1-mobile md:text-h1 text-white fade-in-up delay-1">
+            Stop biofouling from <span class="text-primary-fixed">dragging down</span> your fleet.
+          </h1>
+          <p class="font-body-lg text-body-lg text-white/85 max-w-xl mx-auto fade-in-up delay-2">
+            Algae and marine growth on a hull quietly increase drag, burn more fuel and lift emissions.
+            SeaFlint reads a vessel's own sensor data with machine learning to pinpoint the exact moment a hull needs cleaning.
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-md fade-in-up delay-3">
+          <a class="bg-primary text-on-primary text-center px-3xl py-md rounded-xl font-label-md text-label-md shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all duration-200 active:scale-95" href="https://seaflint.soton.ac.uk/users/login">Login</a>
+          <a class="bg-secondary-container text-on-secondary-container text-center px-3xl py-md rounded-xl font-label-md text-label-md hover:bg-surface-variant transition-all duration-200 active:scale-95" href="#dashboard">Preview</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section: 4 key features -->
+  <section class="py-3xl md:py-32 px-gutter bg-background" id="features" data-screen-label="Features">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-xl mb-3xl fade-in-up">
+        <div class="max-w-2xl">
+          <span class="text-label-sm uppercase tracking-widest text-primary font-bold mb-sm block">Key Features</span>
+          <h2 class="font-h2 text-h2 text-on-surface mb-md">Powerful Tools. Real Results.</h2>
+          <p class="font-body-lg text-on-surface-variant">Hull fouling costs the shipping industry billions in excess fuel every year yet most fleets still rely on fixed cleaning schedules that ignore the actual condition of their vessels. SeaFlint changes that. Our platform combines real voyage data, advanced machine learning, and an intuitive dashboard to give fleet managers, analysts and researchers the tools to act at exactly the right moment.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-md">
+        <!-- Left column: features 01–04 -->
+        <div class="flex flex-col gap-md" x-data="{ open: null }">
+          <template x-for="(f, i) in [
+            { n: '01', t: 'Vessel-Specific Cleaning Optimization', d: 'SeaFlint dynamically determines the exact moment cleaning a vessel\'s hull delivers measurable fuel savings — replacing costly fixed-interval schedules with data-driven decisions tailored to each ship\'s real operational condition.' },
+            { n: '02', t: 'Advanced Predictive Modelling', d: 'Using XGBoost and ensemble tree models trained on real sensor data from tramp-trading vessels, SeaFlint predicts fuel consumption with high accuracy — capturing the complex, non-linear relationship between hull fouling and vessel performance.' },
+            { n: '03', t: 'Everything in One Place', d: 'The SeaFlint dashboard gives every user role the tools they need — from voyage-by-voyage performance maps and timeseries plots to model evaluation metrics — all in one intuitive, interactive interface.' },
+            { n: '04', t: 'Full Voyage Visibility', d: 'Visualise your fleet\'s movements on an interactive map. Hover over any data point to see the exact date, time and position. Flagged anomalies are colour-coded automatically, so data quality issues are always transparent.' }
+          ]" :key="i">
+            <div class="rounded-xl border bg-surface-container-low overflow-hidden transition-colors duration-300" :class="open === i ? 'border-primary' : 'border-outline-variant'">
+              <button type="button" @click="open = (open === i ? null : i)" class="w-full flex items-center justify-between gap-lg px-lg md:px-xl py-lg text-left">
+                <div class="flex items-center gap-md min-w-0">
+                  <span class="text-label-sm text-on-surface-variant tracking-widest shrink-0" x-text="f.n"></span>
+                  <h3 class="font-h3 text-h3 transition-colors duration-300" :class="open === i ? 'text-primary' : 'text-on-surface'" x-text="f.t"></h3>
+                </div>
+                <span class="material-symbols-outlined transition-all duration-300 shrink-0" :class="open === i ? 'rotate-180 text-primary' : 'text-on-surface-variant'">expand_more</span>
+              </button>
+              <div class="grid transition-all duration-300 ease-in-out" :class="open === i ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+                <div class="overflow-hidden">
+                  <p class="px-lg md:px-xl pb-xl pt-0 font-body-md text-on-surface-variant" :class="open === i ? '' : 'opacity-0'" x-text="f.d"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Right column: features 05–08 -->
+        <div class="flex flex-col gap-md" x-data="{ open: null }">
+          <template x-for="(f, i) in [
+            { n: '05', t: 'Clean Hull vs. Fouled Hull — Side by Side', d: 'SeaFlint plots three lines simultaneously: observed fuel consumption, predicted consumption under current fouling, and predicted consumption on a clean hull. The gap between them — backed by confidence intervals — tells fleet managers exactly when to act.' },
+            { n: '06', t: 'Trust Built Into the Platform', d: 'Fleet managers can upload their latest voyage data and independently validate model performance using R², RMSE and MAE metrics — without relying on static reports. Science you can check, every time.' },
+            { n: '07', t: 'Up to 5% Fuel Savings', d: 'Across four years of real vessel data, SeaFlint\'s optimisation framework demonstrated fuel savings of up to 5% per vessel — even after accounting for the cost of additional cleaning events. Less fuel means lower costs and reduced emissions.' },
+            { n: '08', t: 'Connect Your Fleet Data Your Way', d: 'Upload hourly sensor data via Excel or CSV, or connect directly through agreed APIs. SeaFlint automatically preprocesses and links your data to weather and marine conditions — ready for analysis in minutes.' }
+          ]" :key="i">
+            <div class="rounded-xl border bg-surface-container-low overflow-hidden transition-colors duration-300" :class="open === i ? 'border-primary' : 'border-outline-variant'">
+              <button type="button" @click="open = (open === i ? null : i)" class="w-full flex items-center justify-between gap-lg px-lg md:px-xl py-lg text-left">
+                <div class="flex items-center gap-md min-w-0">
+                  <span class="text-label-sm text-on-surface-variant tracking-widest shrink-0" x-text="f.n"></span>
+                  <h3 class="font-h3 text-h3 transition-colors duration-300" :class="open === i ? 'text-primary' : 'text-on-surface'" x-text="f.t"></h3>
+                </div>
+                <span class="material-symbols-outlined transition-all duration-300 shrink-0" :class="open === i ? 'rotate-180 text-primary' : 'text-on-surface-variant'">expand_more</span>
+              </button>
+              <div class="grid transition-all duration-300 ease-in-out" :class="open === i ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+                <div class="overflow-hidden">
+                  <p class="px-lg md:px-xl pb-xl pt-0 font-body-md text-on-surface-variant" :class="open === i ? '' : 'opacity-0'" x-text="f.d"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="py-3xl px-gutter bg-surface-container-low" id="about" data-screen-label="About">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-2xl items-center">
+        <div class="fade-in-up order-2 lg:order-1">
+          <span class="text-label-sm uppercase tracking-widest text-primary font-bold mb-sm block">About SeaFlint</span>
+          <h2 class="font-h2 text-h2 text-on-surface mb-lg">Why SeaFlint?</h2>
+          <p class="font-body-lg text-on-surface-variant mb-md">
+            SeaFlint is a research initiative by the University of Southampton, developed in partnership with <span class="text-on-surface font-semibold">Carisbrooke Shipping Ltd</span>, tackling one of the maritime industry's most persistent efficiency challenges: biofouling.
+          </p>
+          <p class="font-body-md text-on-surface-variant mb-md">When microorganisms plants, algae and small marine animals accumulate on a ship's hull, they increase drag, drive up fuel consumption, and raise emissions. Yet cleaning too early means unnecessary costs and lost operational time. Cleaning too late means wasted fuel. The question has always been: when is the right moment to clean?</p>
+          <p class="font-body-md text-on-surface-variant mb-md">SeaFlint answers that question with data. Using real voyage records and advanced machine learning including XGBoost and Random Forest models we built a dynamic optimization framework that predicts the precise point at which cleaning delivers measurable fuel savings. Our results show fuel reductions of up to 5% over four years, even after accounting for cleaning costs.</p>
+          <p class="font-body-md text-on-surface-variant mb-xl">The platform is accessible through an interactive web dashboard that gives fleet managers, analysts and researchers a shared space to monitor vessel performance, validate predictions, and make cleaning decisions grounded in evidence not fixed schedules.</p>
+        </div>
+        <div class="fade-in-up delay-1 order-1 lg:order-2">
+          <div class="relative aspect-[4/3] rounded-xl overflow-hidden border border-outline-variant">
+            <image-slot id="about-hull" fit="cover" shape="rect" placeholder="Drop a hull / biofouling photo"></image-slot>
+            <div class="absolute top-md left-md flex gap-sm">
+              <span class="bg-inverse-surface/70 backdrop-blur text-inverse-on-surface text-label-sm px-md py-xs rounded-full">Biofouled hull</span>
+              <span class="bg-inverse-surface/70 backdrop-blur text-inverse-on-surface text-label-sm px-md py-xs rounded-full">Increased drag</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Carousel Section -->
+  <section class="py-3xl bg-background overflow-hidden" id="dashboard" data-screen-label="Dashboard" x-data="carousel()" x-init="init()">
+    <div class="max-w-7xl mx-auto px-gutter">
+      <div class="mb-2xl flex flex-col md:flex-row md:items-end justify-between gap-md fade-in-up">
+        <div>
+          <span class="text-label-sm uppercase tracking-widest text-primary font-bold mb-sm block">PREVIEW</span>
+          <h2 class="font-h2 text-h2 text-on-surface">Performance made visible</h2>
+          <p class="font-body-md text-on-surface-variant mt-sm max-w-xl">Operators see each vessel's hull condition, fuel impact and recommended cleaning window. Drop your dashboard screenshots into the slots.</p>
+        </div>
+        <p class="font-label-sm text-on-surface-variant tabular-nums" x-text="`0${currentIndex + 1} / 0${total}`"></p>
+      </div>
+
+      <div class="relative group" @mouseenter="pause()" @mouseleave="resume()">
+        <!-- Slides -->
+        <div class="overflow-hidden rounded-2xl">
+          <div class="flex carousel-track" :style="`transform: translateX(-${currentIndex * 100}%)`">
+            <!-- slide 1 -->
+            <div class="w-full flex-shrink-0">
+              <div class="relative aspect-[16/9] rounded-2xl overflow-hidden bg-inverse-surface">
+                <image-slot id="dash-1" fit="cover" shape="rect" placeholder="Dashboard · Fleet overview"></image-slot>
+              </div>
+            </div>
+            <!-- slide 2 -->
+            <div class="w-full flex-shrink-0">
+              <div class="relative aspect-[16/9] rounded-2xl overflow-hidden bg-inverse-surface">
+                <image-slot id="dash-2" fit="cover" shape="rect" placeholder="Dashboard · Performance trend"></image-slot>
+              </div>
+            </div>
+            <!-- slide 3 -->
+            <div class="w-full flex-shrink-0">
+              <div class="relative aspect-[16/9] rounded-2xl overflow-hidden bg-inverse-surface">
+                <image-slot id="dash-3" fit="cover" shape="rect" placeholder="Dashboard · Cleaning recommendation"></image-slot>
+              </div>
+            </div>
+            <!-- slide 4 -->
+            <div class="w-full flex-shrink-0">
+              <div class="relative aspect-[16/9] rounded-2xl overflow-hidden bg-inverse-surface">
+                <image-slot id="dash-4" fit="cover" shape="rect" placeholder="Dashboard · Vessel detail"></image-slot>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overlaid prev/next arrows -->
+        <button @click="prev()" class="absolute left-md top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur border border-outline-variant shadow-lg opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" aria-label="Previous">
+          <span class="material-symbols-outlined text-on-surface">chevron_left</span>
+        </button>
+        <button @click="next()" class="absolute right-md top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur border border-outline-variant shadow-lg opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" aria-label="Next">
+          <span class="material-symbols-outlined text-on-surface">chevron_right</span>
+        </button>
+      </div>
+
+      <!-- Caption + dot indicators -->
+      <div class="mt-lg flex items-center justify-between">
+        <p class="font-body-sm text-on-surface-variant" x-text="[
+          'Every data point, in context.',
+          'See the cost of fouling in real time.',
+          'Verify performance on your own data.',
+          'Built for fleet managers, analysts and researchers.'
+        ][currentIndex]"></p>
+        <div class="flex items-center gap-sm">
+          <template x-for="i in total" :key="i">
+            <button @click="currentIndex = i - 1; stop()" class="rounded-full transition-all duration-300" :class="currentIndex === i - 1 ? 'w-6 h-2 bg-primary' : 'w-2 h-2 bg-outline-variant hover:bg-outline'" :aria-label="`Go to slide ${i}`"></button>
+          </template>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="py-3xl px-gutter bg-surface-container-low overflow-hidden" id="team" data-screen-label="Team">
+    <div class="max-w-7xl mx-auto">
+      <div class="border-t border-outline-variant pt-xl mb-2xl fade-in-up">
+        <div class="max-w-2xl">
+          <span class="text-label-sm uppercase tracking-widest text-primary font-bold mb-sm block">The Team</span>
+          <h2 class="font-h2 text-h2 text-on-surface mb-md">The people behind SeaFlint</h2>
+          <p class="font-body-lg text-on-surface-variant">A University of Southampton team pairing machine-learning research with real fleet data from Carisbrooke Shipping. Drop in headshots and update the names below.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-lg">
+        <!-- member template repeated -->
+        <div class="group relative overflow-hidden rounded-xl bg-surface-variant aspect-[3/4] fade-in-up">
+          <image-slot id="team-1" fit="cover" shape="rect" placeholder="Headshot"></image-slot>
+          <div class="absolute inset-x-0 bottom-0 p-lg bg-gradient-to-t from-black/80 to-transparent translate-y-[calc(100%-72px)] group-hover:translate-y-0 transition-transform duration-300">
+            <h4 class="text-white font-h3 text-h3">Team Member</h4>
+            <p class="text-white/80 font-body-sm">PhD Student
+University of Southampton </p>
+            <a class="inline-flex items-center gap-1 text-primary-fixed mt-sm text-label-sm hover:underline" href="#">Profile <span class="material-symbols-outlined text-[14px]">arrow_outward</span></a>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-xl bg-surface-variant aspect-[3/4] fade-in-up delay-1">
+          <image-slot id="team-2" fit="cover" shape="rect" placeholder="Headshot"></image-slot>
+          <div class="absolute inset-x-0 bottom-0 p-lg bg-gradient-to-t from-black/80 to-transparent translate-y-[calc(100%-72px)] group-hover:translate-y-0 transition-transform duration-300">
+            <h4 class="text-white font-h3 text-h3">Julian Wharton</h4>
+            <p class="text-white/80 font-body-sm">Professor of Mechanical Engineering
+University of Southampton</p>
+            <a class="inline-flex items-center gap-1 text-primary-fixed mt-sm text-label-sm hover:underline" href="#">Profile <span class="material-symbols-outlined text-[14px]">arrow_outward</span></a>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-xl bg-surface-variant aspect-[3/4] fade-in-up delay-2">
+          <image-slot id="team-3" fit="cover" shape="rect" placeholder="Headshot"></image-slot>
+          <div class="absolute inset-x-0 bottom-0 p-lg bg-gradient-to-t from-black/80 to-transparent translate-y-[calc(100%-72px)] group-hover:translate-y-0 transition-transform duration-300">
+            <h4 class="text-white font-h3 text-h3">Marah Thormann</h4>
+            <p class="text-white/80 font-body-sm">PhD Student
+University of Southampton </p>
+            <a class="inline-flex items-center gap-1 text-primary-fixed mt-sm text-label-sm hover:underline" href="#">Profile <span class="material-symbols-outlined text-[14px]">arrow_outward</span></a>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-xl bg-surface-variant aspect-[3/4] fade-in-up">
+          <image-slot id="team-4" fit="cover" shape="rect" placeholder="Headshot"></image-slot>
+          <div class="absolute inset-x-0 bottom-0 p-lg bg-gradient-to-t from-black/80 to-transparent translate-y-[calc(100%-72px)] group-hover:translate-y-0 transition-transform duration-300">
+            <h4 class="text-white font-h3 text-h3">Alain Zemkoho</h4>
+            <p class="text-white/80 font-body-sm">Professor of Mathematical Optimization
+University of Southampton</p>
+            <a class="inline-flex items-center gap-1 text-primary-fixed mt-sm text-label-sm hover:underline" href="#">Profile <span class="material-symbols-outlined text-[14px]">arrow_outward</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Partner logos -->
+      <div class="mt-3xl pt-xl border-t border-outline-variant flex flex-col lg:flex-row lg:items-center gap-xl fade-in-up">
+        <span class="text-label-sm uppercase tracking-widest text-on-surface-variant whitespace-nowrap">In partnership with</span>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-lg flex-1 w-full max-w-4xl">
+          <div class="h-[88px] rounded-lg bg-surface-container-lowest border border-outline-variant overflow-hidden flex items-center justify-center p-md">
+            <img src="assets/partner-nhs.jpg" alt="NHS" class="max-h-full max-w-full object-contain" />
+          </div>
+          <div class="h-[88px] rounded-lg bg-surface-container-lowest border border-outline-variant overflow-hidden flex items-center justify-center p-md">
+            <img src="assets/partner-rsg.png" alt="Research Software Group" class="max-h-full max-w-full object-contain" />
+          </div>
+          <div class="h-[88px] rounded-lg bg-surface-container-lowest border border-outline-variant overflow-hidden flex items-center justify-center p-md">
+            <img src="assets/partner-southampton.png" alt="University of Southampton" class="max-h-full max-w-full object-contain" />
+          </div>
+          <div class="h-[88px] rounded-lg bg-surface-container-lowest border border-outline-variant overflow-hidden flex items-center justify-center p-md">
+            <img src="assets/partner-das.png" alt="Decision Analysis Services" class="max-h-full max-w-full object-contain" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research Section -->
+  <section class="py-3xl px-gutter max-w-7xl mx-auto" id="contact" data-screen-label="Research">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-lg items-stretch">
+      <div class="lg:col-span-2 flex flex-col justify-center fade-in-up">
+        <span class="text-label-sm uppercase tracking-widest text-primary font-bold mb-sm block">The Research Behind SeaFlint</span>
+        <h2 class="font-h2 text-h2 text-on-surface mb-md">Grounded in peer-reviewed research</h2>
+        <p class="font-body-lg text-on-surface-variant">
+          SeaFlint is built on peer-reviewed academic research. If you want to dive deeper into the methodology, the machine-learning models, or the optimization framework that powers our platform, our full paper is freely available.
+        </p>
+      </div>
+
+      <!-- Paper card -->
+      <div class="lg:col-span-3 fade-in-up delay-1">
+        <a href="https://arxiv.org/abs/2602.11248" target="_blank" rel="noopener" class="group block h-full p-xl md:p-2xl bg-surface-container-low rounded-xl border border-outline-variant hover:border-primary transition-colors duration-300 relative overflow-hidden">
+          <div class="absolute top-0 right-0 p-lg opacity-[0.07] group-hover:scale-110 transition-transform duration-500 pointer-events-none">
+            <span class="material-symbols-outlined text-[160px]">description</span>
+          </div>
+          <div class="relative z-10 flex flex-col h-full">
+            <span class="inline-flex items-center gap-2 self-start text-label-sm uppercase tracking-widest text-on-surface-variant mb-lg">
+              <span class="material-symbols-outlined text-primary text-xl">article</span>
+              Research paper
+            </span>
+            <h3 class="font-h3 text-h3 text-on-surface mb-lg max-w-xl text-balance">Data-Driven Hull-Fouling Cleaning Schedule Optimization to Reduce Carbon Footprint of Vessels</h3>
+            <dl class="space-y-sm mb-xl">
+              <div class="flex gap-md">
+                <dt class="w-28 shrink-0 font-body-sm text-on-surface-variant">Authors</dt>
+                <dd class="font-body-sm text-on-surface">S. Ward, M. L. Thormann, J. Wharton, A. Zemkoho</dd>
+              </div>
+              <div class="flex gap-md">
+                <dt class="w-28 shrink-0 font-body-sm text-on-surface-variant">Institution</dt>
+                <dd class="font-body-sm text-on-surface">University of Southampton</dd>
+              </div>
+            </dl>
+            <span class="mt-auto inline-flex items-center gap-2 text-primary font-bold">
+              Read the full paper on arXiv
+              <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_outward</span>
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface border-t border-outline-variant">
+  <div class="max-w-7xl mx-auto px-gutter flex flex-col sm:flex-row items-center justify-between gap-md text-center">
+    <div class="flex items-center gap-sm">
+      <img src="assets/logo.png" alt="SeaFlint" class="h-10 w-auto" />
+    </div>
+    <p class="font-body-sm text-on-surface-variant max-w-xl">
+</p>
+    <p class="font-body-sm text-on-surface-variant">© 2026 SeaFlint</p>
+  </div>
+</footer>
+
+<script>
+  function carousel() {
+    return {
+      currentIndex: 0,
+      total: 4,
+      timer: null,
+      next() { this.currentIndex = this.currentIndex >= this.total - 1 ? 0 : this.currentIndex + 1; if (this.timer) this.start(); },
+      prev() { this.currentIndex = this.currentIndex <= 0 ? this.total - 1 : this.currentIndex - 1; if (this.timer) this.start(); },
+      start() { this.stop(); this.timer = setInterval(() => this.next(), 2000); },
+      stop() { if (this.timer) { clearInterval(this.timer); this.timer = null; } },
+      pause() { this.stop(); },
+      resume() { this.start(); },
+      init() { this.start(); }
+    }
+  }
+
+  // Scroll-reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+  // hero reveals immediately
+  document.querySelectorAll('section[data-screen-label="Hero"] .fade-in-up').forEach(el => el.classList.add('visible'));
+
+  // Hide header on scroll down, reveal on scroll up
+  const header = document.getElementById('header');
+  let lastScroll = window.scrollY;
+  let ticking = false;
+  function onHeaderScroll() {
+    const y = window.scrollY;
+    const menuOpen = header.__x ? header.__x.$data.open : header._x_dataStack && header._x_dataStack[0] && header._x_dataStack[0].open;
+    if (y > lastScroll && y > 120 && !menuOpen) {
+      // scrolling down — hide
+      header.classList.add('header-hidden');
+    } else {
+      // scrolling up — show
+      header.classList.remove('header-hidden');
+    }
+    lastScroll = y;
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { window.requestAnimationFrame(onHeaderScroll); ticking = true; }
+  }, { passive: true });
+</script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#2563eb"/>
+    <path d="M0 66 Q 25 56 50 66 T 100 66 V100 H0 Z" fill="#dbe5ff" opacity="0.7"/>
+    <path d="M0 78 Q 25 70 50 78 T 100 78 V100 H0 Z" fill="#ffffff" opacity="0.8"/>
+    <text x="50" y="42" fill="#fff" font-family="Inter, sans-serif" font-size="13" font-weight="800" text-anchor="middle">SeaFlint</text>
+  </svg>
+</template>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+.thumbnail
+
+# Editor tooling (not needed for deployment)
+tweaks.jsx
+tweaks-panel.jsx
+
+# Raw uploads (processed images live in .image-slots.state.json)
+uploads/
+
+# Export duplicates
+export/
+
+# Misc
+*.log
