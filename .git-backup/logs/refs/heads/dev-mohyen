@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 55fa9e324f7a5bd46f23035cf1e9a2b0b626bb0f MOHYEN JUNIOR <mtakouteu@gmail.com> 1780485495 +0100	branch: Created from HEAD
+55fa9e324f7a5bd46f23035cf1e9a2b0b626bb0f dd4f27361181bc1dfa312aea8372f5414dde0f6d MOHYEN JUNIOR <mtakouteu@gmail.com> 1780486251 +0100	commit: Update slideshow button functionality and adjust autoplay interval
+dd4f27361181bc1dfa312aea8372f5414dde0f6d 24f393c0e32068f5a4b4d05bdb88f8b21a99ed7e MOHYEN JUNIOR <mtakouteu@gmail.com> 1783530341 +0100	commit: Implement feature X to enhance user experience and fix bug Y in module Z
+24f393c0e32068f5a4b4d05bdb88f8b21a99ed7e cbe97244cae3248b3b151352a9e820ba9c62a65e MOHYEN JUNIOR <mtakouteu@gmail.com> 1783633935 +0100	commit: Remove index.html and add new assets for the SeaFlint project, including images for the dashboard, team members, and favicon.
+cbe97244cae3248b3b151352a9e820ba9c62a65e 36263d3d2a494a8bee4b5e553158069ebae13dd6 MOHYEN JUNIOR <mtakouteu@gmail.com> 1783635930 +0100	commit: feat: initialize Next.js project with Tailwind CSS and TypeScript
+36263d3d2a494a8bee4b5e553158069ebae13dd6 752195d453e5c56e5c22bb05a225cccd9c906242 MOHYEN JUNIOR <mtakouteu@gmail.com> 1783637238 +0100	commit: feat: refactor DashboardCarousel to use ImageAutoSlider component and update styles in Header and Hero components

@@ -1,0 +1,3 @@
+0000000000000000000000000000000000000000 97ef3eedb44abcf63536b8170373f842d88d582b MOHYEN JUNIOR <mtakouteu@gmail.com> 1780480449 +0100	commit (initial): Initial deploy: SeaFlint landing page
+97ef3eedb44abcf63536b8170373f842d88d582b 6f0abcb1fe02add5501852a87130c410c0e59c07 MOHYEN JUNIOR <mtakouteu@gmail.com> 1780481391 +0100	commit: Add favicon
+6f0abcb1fe02add5501852a87130c410c0e59c07 55fa9e324f7a5bd46f23035cf1e9a2b0b626bb0f MOHYEN JUNIOR <mtakouteu@gmail.com> 1780481909 +0100	commit: Replace image-slot component with static img tags
