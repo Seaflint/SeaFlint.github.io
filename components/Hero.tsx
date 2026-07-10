@@ -10,7 +10,6 @@ export default function Hero() {
         <video
           className="absolute inset-0 h-full w-full object-cover object-center scale-105"
           src="/assets/hero.mp4"
-          poster="/assets/hero_bg2.jpg"
           autoPlay
           muted
           loop
