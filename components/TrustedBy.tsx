@@ -1,11 +1,11 @@
 const PARTNERS = [
-  { src: "/assets/partner-nhs.jpg", alt: "NHS", href: "https://www.uhs.nhs.uk/" },
-  { src: "/assets/partner-rsg.png", alt: "Research Software Group", href: "https://rsgsoton.net/" },
   {
     src: "/assets/partner-southampton.png",
     alt: "University of Southampton",
     href: "https://www.southampton.ac.uk/about/faculties-schools-departments/school-of-mathematical-sciences",
   },
+  { src: "/assets/partner-rsg.png", alt: "Research Software Group", href: "https://rsgsoton.net/" },
+  { src: "/assets/partner-nhs.jpg", alt: "NHS", href: "https://www.uhs.nhs.uk/" },
   { src: "/assets/partner-das.png", alt: "Decision Analysis Services", href: "https://www.das-int.com/" },
 ];
 

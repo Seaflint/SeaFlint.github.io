@@ -64,7 +64,7 @@ export default function Header() {
       ref={headerRef}
       id="header"
       className={`fixed top-0 inset-x-0 z-50 w-full transition-all duration-300 ease-out will-change-transform ${
-        scrolled ? "bg-black/35 backdrop-blur-xl" : "bg-transparent"
+        scrolled ? "bg-black/25 backdrop-blur-xl" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex items-center justify-between gap-6 w-full max-w-7xl px-6 py-1 lg:px-12">
@@ -75,12 +75,12 @@ export default function Header() {
           <img
             src="/assets/logo.png"
             alt="SeaFlint"
-            className="h-14 w-auto brightness-0 invert saturate-150"
+            className="h-24 w-auto brightness-0 invert saturate-150"
           />
           
         </a>
 
-        <div className="hidden lg:flex items-center gap-10 text-sm font-semibold text-white">
+        <div className="hidden lg:flex items-center gap-10 text-base font-semibold text-white">
           {NAV_LINKS.map((link) => (
             <a key={link.href} className="transition-colors hover:text-white" href={link.href}>
               {link.label}
@@ -91,14 +91,14 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <a
             href="https://seaflint.soton.ac.uk/users/login"
-            className="hidden sm:inline-flex h-11 items-center rounded-full border-2 border-white bg-transparent px-5 text-sm font-semibold text-white transition-all hover:bg-white hover:text-[#091a3a] active:scale-95"
+            className="hidden sm:inline-flex h-11 items-center rounded-full border-2 border-white bg-transparent px-5 text-base font-semibold text-white transition-all hover:bg-white hover:text-[#091a3a] active:scale-95"
           >
             Login
           </a>
           <button
             type="button"
             onClick={openRegister}
-            className="hidden sm:inline-flex h-11 items-center rounded-full bg-[#34A99D] px-5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(52,169,157,0.35)] transition-all hover:bg-[#2b8f85] active:scale-95"
+            className="hidden sm:inline-flex h-11 items-center rounded-full bg-[#34A99D] px-5 text-base font-semibold text-white shadow-[0_8px_20px_rgba(52,169,157,0.35)] transition-all hover:bg-[#2b8f85] active:scale-95"
           >
             Request Access
           </button>
