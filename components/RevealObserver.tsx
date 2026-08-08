@@ -21,14 +21,30 @@ export default function RevealObserver() {
       { threshold: 0.12 }
     );
 
-    document.querySelectorAll(".fade-in-up").forEach((el) => observer.observe(el));
+    const revealHero = () =>
+      document
+        .querySelectorAll('section[data-screen-label="Hero"] .fade-in-up')
+        .forEach((el) => el.classList.add("visible"));
 
-    // Hero content reveals immediately.
-    document
-      .querySelectorAll('section[data-screen-label="Hero"] .fade-in-up')
-      .forEach((el) => el.classList.add("visible"));
+    const observeAll = () => {
+      document
+        .querySelectorAll(".fade-in-up:not(.visible)")
+        .forEach((el) => observer.observe(el));
+      // Hero content reveals immediately.
+      revealHero();
+    };
 
-    return () => observer.disconnect();
+    observeAll();
+
+    // Pick up any `.fade-in-up` nodes added later (e.g. dev Fast Refresh
+    // remounts a section), so freshly mounted content never stays hidden.
+    const mo = new MutationObserver(observeAll);
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      mo.disconnect();
+    };
   }, []);
 
   return null;

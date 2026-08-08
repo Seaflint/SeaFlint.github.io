@@ -62,8 +62,7 @@ main > section:not([data-screen-label="Hero"]) {
 }
 
 footer {
-  background-color: rgba(255, 255, 255, 0.58) !important;
-  backdrop-filter: blur(6px);
+  background-color: #0d9488 !important;
 }
 
 #features {

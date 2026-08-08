@@ -30,10 +30,9 @@ export default function About() {
               compliance with evolving maritime sustainability regulations.
             </p>
             <p className="font-body-md text-on-surface-variant mb-xl">
-              The platform is accessible through an interactive web dashboard that gives fleet
-              managers, analysts and researchers practical insights to reduce fuel consumption,
-              lower carbon emissions, and improve compliance with evolving maritime sustainability
-              regulations grounded in evidence, not fixed schedules.
+              Accessed through an interactive web dashboard,
+              SeaFlint translates these optimization insights into actionable, 
+              evidence-based recommendations for fleet managers, analysts, and researchers moving beyond fixed maintenance schedules to support timely, data-informed operational decisions.
             </p>
           </div>
           <div className="fade-in-up delay-1 order-1 lg:order-2">

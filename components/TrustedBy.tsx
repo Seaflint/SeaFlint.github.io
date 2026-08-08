@@ -5,7 +5,7 @@ const PARTNERS = [
     href: "https://www.southampton.ac.uk/about/faculties-schools-departments/school-of-mathematical-sciences",
   },
   { src: "/assets/partner-rsg.png", alt: "Research Software Group", href: "https://rsgsoton.net/" },
-  { src: "/assets/partner-nhs.jpg", alt: "NHS", href: "https://www.uhs.nhs.uk/" },
+  { src: "/assets/partner-cs.png", alt: "NHS", href: "https://carisbrooke.co/?doing_wp_cron=1786209749.9480230808258056640625" },
   { src: "/assets/partner-das.png", alt: "Decision Analysis Services", href: "https://www.das-int.com/" },
 ];
 

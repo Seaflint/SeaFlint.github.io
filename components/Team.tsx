@@ -65,10 +65,10 @@ export default function Team() {
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 className="object-cover"
               />
-              <div className="absolute inset-x-0 bottom-0 p-lg bg-gradient-to-t from-black/80 to-transparent translate-y-[calc(100%-72px)] group-hover:translate-y-0 transition-transform duration-300">
+              <div className="absolute inset-x-0 bottom-0 px-lg pt-md pb-xl bg-gradient-to-t from-black/85 via-black/55 to-transparent translate-y-[calc(100%-108px)] group-hover:translate-y-0 transition-transform duration-300">
                 <h4 className="text-white font-h3 text-h3">{member.name}</h4>
                 <p className="text-white/80 font-body-sm">{member.role}</p>
-                <p className="text-white/70 font-body-sm mt-sm">{member.bio}</p>
+                <p className="text-white/70 font-body-sm mt-md pb-sm">{member.bio}</p>
               </div>
             </div>
           ))}
