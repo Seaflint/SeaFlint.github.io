@@ -1,32 +1,35 @@
-import { RegisterProvider } from "@/components/RegisterContext";
 import RevealObserver from "@/components/RevealObserver";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import TrustedBy from "@/components/TrustedBy";
-import Features from "@/components/Features";
-import About from "@/components/About";
-import DashboardCarousel from "@/components/DashboardCarousel";
-import Team from "@/components/Team";
+import Platform from "@/components/Platform";
+import Collaborate from "@/components/Collaborate";
 import Research from "@/components/Research";
-import RegisterModal from "@/components/RegisterModal";
+import Team from "@/components/Team";
+import ContactInvite from "@/components/ContactInvite";
+import Partners from "@/components/Partners";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <RegisterProvider>
+    <>
       <RevealObserver />
+      <a
+        href="#platform"
+        className="skip-link rounded-full bg-cyan px-5 py-3 text-sm font-bold text-navy"
+      >
+        Skip to main content
+      </a>
       <Header />
       <main id="top">
         <Hero />
-        <TrustedBy />
-        <Features />
-        <About />
-        <DashboardCarousel />
-        <Team />
+        <Platform />
+        <Collaborate />
         <Research />
+        <Team />
+        <ContactInvite />
       </main>
-      <RegisterModal />
+      <Partners />
       <Footer />
-    </RegisterProvider>
+    </>
   );
 }

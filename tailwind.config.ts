@@ -7,6 +7,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Approved brief palette
+        navy: "#05283D",
+        "navy-800": "#0a3450",
+        cyan: "#00D9E7",
+        "cyan-dark": "#00b9c6",
+        pale: "#EAF7FC",
         surface: "#ffffff",
         background: "#f6fbff",
         "surface-container-lowest": "#ffffff",

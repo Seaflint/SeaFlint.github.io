@@ -1,67 +1,58 @@
+import { PAPER_URL } from "./site";
+
 export default function Research() {
   return (
-    <section
-      className="py-3xl px-gutter max-w-7xl mx-auto"
-      id="contact"
-      data-screen-label="Research"
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-lg items-stretch">
-        <div className="lg:col-span-2 flex flex-col justify-center fade-in-up">
-          <span className="text-label-sm uppercase tracking-widest text-primary font-bold mb-sm block">
-            The Research Behind SeaFlint
-          </span>
-          <h2 className="font-h2 text-h2 text-on-surface mb-md">
-            Grounded in peer-reviewed research
-          </h2>
-          <p className="font-body-lg text-on-surface-variant">
-            SeaFlint is built on peer-reviewed academic research. If you want to dive deeper into
-            the methodology, the machine-learning models, or the optimization framework that powers
-            our platform, our full paper is freely available.
-          </p>
-        </div>
+    <section id="research" data-screen-label="Research" className="bg-white pb-10 pt-12 md:pb-14 md:pt-20">
+      <div className="mx-auto max-w-[1200px] px-5 sm:px-6">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-5 lg:items-stretch">
+          {/* Explanation (left) */}
+          <div className="flex flex-col justify-center lg:col-span-2 fade-in-up">
+            <span className="mb-3 block text-sm font-bold uppercase tracking-[0.2em] text-cyan-dark">
+              The research behind SeaFlint
+            </span>
+            <h2 className="mb-4 font-h2 text-[clamp(1.8rem,3vw,2.5rem)] font-bold leading-tight tracking-[-0.02em] text-navy">
+              Grounded in peer-reviewed research
+            </h2>
+            <p className="text-[1.05rem] leading-relaxed text-navy/75">
+              SeaFlint is built on peer-reviewed academic research. If you want to dive deeper into
+              the methodology, the machine-learning models, or the optimisation framework that powers
+              our platform, our full paper is freely available.
+            </p>
+          </div>
 
-        {/* Paper card */}
-        <div className="lg:col-span-3 fade-in-up delay-1">
-          <a
-            href="https://arxiv.org/abs/2602.11248"
-            target="_blank"
-            rel="noopener"
-            className="group block h-full p-xl md:p-2xl bg-surface-container-low rounded-xl border border-outline-variant hover:border-primary transition-colors duration-300 relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 p-lg opacity-[0.07] group-hover:scale-110 transition-transform duration-500 pointer-events-none">
-              <span className="material-symbols-outlined text-[160px]">description</span>
-            </div>
-            <div className="relative z-10 flex flex-col h-full">
-              <span className="inline-flex items-center gap-2 self-start text-label-sm uppercase tracking-widest text-on-surface-variant mb-lg">
-                <span className="material-symbols-outlined text-primary text-xl">article</span>
+          {/* Publication card (right) */}
+          <div className="lg:col-span-3 fade-in-up delay-1">
+            <div className="flex h-full flex-col rounded-xl border border-navy/10 bg-pale p-7 md:p-9">
+              <span className="mb-5 inline-flex items-center gap-2 self-start rounded-full bg-white px-3 py-1.5 text-sm font-bold uppercase tracking-wider text-navy/70">
+                <span className="material-symbols-outlined text-base text-cyan-dark">article</span>
                 Research paper
               </span>
-              <h3 className="font-h3 text-h3 text-on-surface mb-lg max-w-xl text-balance">
-                Data-Driven Hull-Fouling Cleaning Schedule Optimization to Reduce Carbon Footprint
-                of Vessels
+              <h3 className="mb-6 font-h3 text-[1.45rem] font-bold leading-snug tracking-[-0.01em] text-navy text-balance">
+                Data-Driven Hull-Fouling Cleaning Schedule Optimization to Reduce Carbon Footprint of
+                Vessels
               </h3>
-              <dl className="space-y-sm mb-xl">
-                <div className="flex gap-md">
-                  <dt className="w-28 shrink-0 font-body-sm text-on-surface-variant">Authors</dt>
-                  <dd className="font-body-sm text-on-surface">
-                    S. Ward, M. L. Thormann, J. Wharton, A. Zemkoho
-                  </dd>
+              <dl className="mb-7 space-y-3">
+                <div className="flex gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-navy/55">Authors</dt>
+                  <dd className="text-sm text-navy">S. Ward, M. L. Thormann, J. Wharton, A. Zemkoho</dd>
                 </div>
-                <div className="flex gap-md">
-                  <dt className="w-28 shrink-0 font-body-sm text-on-surface-variant">
-                    Institution
-                  </dt>
-                  <dd className="font-body-sm text-on-surface">University of Southampton</dd>
+                <div className="flex gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-navy/55">Institution</dt>
+                  <dd className="text-sm text-navy">University of Southampton</dd>
                 </div>
               </dl>
-              <span className="mt-auto inline-flex items-center gap-2 text-primary font-bold">
+              <a
+                href={PAPER_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-auto inline-flex items-center gap-2 self-start text-base font-bold text-cyan-dark hover:underline"
+              >
                 Read the full paper on arXiv
-                <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">
-                  arrow_outward
-                </span>
-              </span>
+                <span className="material-symbols-outlined text-lg">arrow_outward</span>
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
             </div>
-          </a>
+          </div>
         </div>
       </div>
     </section>

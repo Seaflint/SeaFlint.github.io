@@ -10,9 +10,9 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "SeaFlint — Smarter hull cleaning, powered by machine learning",
+  title: "SeaFlint | Data-driven hull-cleaning decisions",
   description:
-    "SeaFlint reads a vessel's own sensor data with machine learning to pinpoint the exact moment a hull needs cleaning — cutting fuel use and emissions.",
+    "Explore SeaFlint's vessel-performance research and hull-cleaning decision support. Discuss industry applications, research collaboration, data partnerships or testing.",
   icons: { icon: "/favicon.ico" },
 };
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`scroll-smooth ${roboto.variable}`}>
+    <html lang="en" className={roboto.variable}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
