@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="dco-title dco-desc">
+  <title id="dco-title">Schematic: cleaning timed to hull condition rather than a fixed calendar</title>
+  <desc id="dco-desc">Two schematic curves of excess fuel use caused by hull fouling. A fixed-interval schedule allows fouling to build to higher peaks before each clean, while condition-based timing keeps the peaks lower across the same number of cleans.</desc>
+  <rect width="800" height="450" fill="#ffffff"/>
+
+  <!-- plot frame -->
+  <rect x="90" y="70" width="660" height="292" fill="#EAF7FC" rx="8"/>
+  <g stroke="#ffffff" stroke-width="1.5">
+    <line x1="90" y1="143" x2="750" y2="143"/>
+    <line x1="90" y1="216" x2="750" y2="216"/>
+    <line x1="90" y1="289" x2="750" y2="289"/>
+  </g>
+
+  <!-- axes -->
+  <line x1="90" y1="362" x2="750" y2="362" stroke="#05283D" stroke-width="2"/>
+  <line x1="90" y1="70" x2="90" y2="362" stroke="#05283D" stroke-width="2"/>
+
+  <!-- fixed interval schedule -->
+  <path d="M90,355 L290,115 L290,340 L490,108 L490,338 L690,110 L690,342 L750,300"
+        fill="none" stroke="#7C93A5" stroke-width="3" stroke-dasharray="7 6"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- condition based schedule -->
+  <path d="M90,355 L240,190 L240,345 L430,185 L430,343 L640,188 L640,344 L750,260"
+        fill="none" stroke="#00D9E7" stroke-width="4"
+        stroke-linejoin="round" stroke-linecap="round"/>
+  <g fill="#05283D">
+    <circle cx="240" cy="190" r="6"/>
+    <circle cx="430" cy="185" r="6"/>
+    <circle cx="640" cy="188" r="6"/>
+  </g>
+  <g fill="#00D9E7">
+    <circle cx="240" cy="190" r="3"/>
+    <circle cx="430" cy="185" r="3"/>
+    <circle cx="640" cy="188" r="3"/>
+  </g>
+
+  <!-- axis labels -->
+  <text x="70" y="216" transform="rotate(-90 70 216)" text-anchor="middle"
+        font-family="Roboto, system-ui, sans-serif" font-size="15" font-weight="600" fill="#05283D">
+    Excess fuel use from fouling
+  </text>
+  <text x="420" y="392" text-anchor="middle"
+        font-family="Roboto, system-ui, sans-serif" font-size="15" font-weight="600" fill="#05283D">
+    Time in service
+  </text>
+
+  <!-- legend -->
+  <g font-family="Roboto, system-ui, sans-serif" font-size="14" fill="#05283D">
+    <line x1="92" y1="30" x2="132" y2="30" stroke="#7C93A5" stroke-width="3" stroke-dasharray="7 6"/>
+    <text x="140" y="35">Fixed interval</text>
+    <line x1="268" y1="30" x2="308" y2="30" stroke="#00D9E7" stroke-width="4"/>
+    <text x="316" y="35">Timed to hull condition</text>
+    <circle cx="556" cy="30" r="5" fill="#05283D"/>
+    <text x="570" y="35">Cleaning event</text>
+  </g>
+
+  <text x="420" y="428" text-anchor="middle"
+        font-family="Roboto, system-ui, sans-serif" font-size="13" fill="#4B6584">
+    Schematic illustration of the approach — not measured vessel data
+  </text>
+</svg>

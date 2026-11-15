@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="dfs-title dfs-desc">
+  <title id="dfs-title">Schematic: net cost effect of optimising the cleaning schedule</title>
+  <desc id="dfs-desc">Two schematic stacked bars comparing total operating cost. A fixed schedule carries a larger fuel cost and a smaller cleaning cost. An optimised schedule lowers fuel cost by more than it raises cleaning cost, leaving a net reduction.</desc>
+  <rect width="800" height="450" fill="#ffffff"/>
+
+  <rect x="70" y="60" width="660" height="302" fill="#EAF7FC" rx="8"/>
+  <line x1="70" y1="362" x2="730" y2="362" stroke="#05283D" stroke-width="2"/>
+
+  <!-- fixed schedule bar -->
+  <rect x="200" y="120" width="120" height="210" fill="#05283D" rx="4"/>
+  <rect x="200" y="330" width="120" height="30" fill="#00D9E7" rx="4"/>
+  <text x="260" y="390" text-anchor="middle" font-family="Roboto, system-ui, sans-serif"
+        font-size="15" font-weight="700" fill="#05283D">Fixed schedule</text>
+
+  <!-- optimised schedule bar -->
+  <rect x="440" y="165" width="120" height="153" fill="#05283D" rx="4"/>
+  <rect x="440" y="318" width="120" height="42" fill="#00D9E7" rx="4"/>
+  <text x="500" y="390" text-anchor="middle" font-family="Roboto, system-ui, sans-serif"
+        font-size="15" font-weight="700" fill="#05283D">Optimised schedule</text>
+
+  <!-- net reduction bracket -->
+  <line x1="320" y1="120" x2="610" y2="120" stroke="#4B6584" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <line x1="560" y1="165" x2="610" y2="165" stroke="#4B6584" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <path d="M610,120 L610,165" stroke="#0a7f8a" stroke-width="3"/>
+  <path d="M604,126 L610,120 L616,126" fill="none" stroke="#0a7f8a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M604,159 L610,165 L616,159" fill="none" stroke="#0a7f8a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="624" y="138" font-family="Roboto, system-ui, sans-serif" font-size="14" font-weight="700" fill="#0a7f8a">Net</text>
+  <text x="624" y="156" font-family="Roboto, system-ui, sans-serif" font-size="14" font-weight="700" fill="#0a7f8a">reduction</text>
+
+  <!-- legend -->
+  <g font-family="Roboto, system-ui, sans-serif" font-size="14" fill="#05283D">
+    <rect x="200" y="22" width="16" height="16" fill="#05283D" rx="3"/>
+    <text x="224" y="35">Fuel cost</text>
+    <rect x="330" y="22" width="16" height="16" fill="#00D9E7" rx="3"/>
+    <text x="354" y="35">Cleaning cost</text>
+  </g>
+
+  <text x="400" y="428" text-anchor="middle"
+        font-family="Roboto, system-ui, sans-serif" font-size="13" fill="#4B6584">
+    Schematic illustration of the trade-off — not measured vessel data
+  </text>
+</svg>

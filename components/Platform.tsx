@@ -12,6 +12,12 @@ type GalleryImage = {
   title: string;
   caption: string;
   alt: string;
+  /**
+   * An explanatory diagram rather than a genuine platform screenshot. These
+   * illustrate features that have no real captured output, and are deliberately
+   * kept out of the "View all screenshots" gallery.
+   */
+  diagram?: boolean;
 };
 
 type Feature = {
@@ -65,7 +71,44 @@ const IMAGES: GalleryImage[] = [
     caption: "Wind-speed histogram and wind-direction rose summarising a vessel's conditions.",
     alt: "Dashboard histograms panel showing a wind-speed distribution bar chart and a wind-direction rose chart.",
   },
+  // Explanatory diagrams for features with no captured platform output.
+  {
+    id: "diagram-cleaning",
+    src: "/assets/diagram-cleaning-optimisation.svg",
+    w: 800,
+    h: 450,
+    diagram: true,
+    title: "Timing cleaning to hull condition",
+    caption:
+      "Diagram: cleaning timed to measured hull condition keeps excess fuel use lower than a fixed calendar interval. Illustration of the approach, not vessel data.",
+    alt: "Schematic comparing two curves of excess fuel use from fouling. A fixed interval allows higher peaks before each clean; condition-based timing keeps peaks lower across the same number of cleans.",
+  },
+  {
+    id: "diagram-savings",
+    src: "/assets/diagram-fuel-savings.svg",
+    w: 800,
+    h: 450,
+    diagram: true,
+    title: "The cost trade-off being optimised",
+    caption:
+      "Diagram: an optimised schedule lowers fuel cost by more than it raises cleaning cost, leaving a net reduction. Illustration of the trade-off, not vessel data.",
+    alt: "Schematic stacked bars comparing total cost for a fixed schedule and an optimised schedule, with the net reduction marked between the two bar tops.",
+  },
+  {
+    id: "diagram-data",
+    src: "/assets/diagram-data-access.svg",
+    w: 800,
+    h: 450,
+    diagram: true,
+    title: "Data sources and access conditions",
+    caption:
+      "Diagram: the data that feeds the models, and the non-commercial limits that apply to the current weather and marine source.",
+    alt: "Schematic showing vessel sensor data, voyage and port records and weather and marine data feeding the SeaFlint models, which produce cleaning decision support, with a note that the weather source is non-commercial with limited downloads.",
+  },
 ];
+
+/** The screenshot gallery shows genuine platform captures only. */
+const SCREENSHOTS = IMAGES.filter((i) => !i.diagram);
 
 const FEATURES: Feature[] = [
   {
@@ -73,7 +116,7 @@ const FEATURES: Feature[] = [
     menuLabel: "Cleaning optimisation",
     originalTitle: "Vessel-Specific Cleaning Optimization",
     body: "SeaFlint finds the exact moments cleaning a hull delivers cost-effective fuel savings, replacing fixed maintenance intervals with data-driven decisions.",
-    imageIds: [],
+    imageIds: ["diagram-cleaning"],
   },
   {
     id: "predictive-modelling",
@@ -116,7 +159,7 @@ const FEATURES: Feature[] = [
     originalTitle: "Up to 5% Fuel Savings",
     body: "Numerical experiments using four years of sensor data from nine vessels indicated potential fuel-consumption reductions of up to 5%, accounting for additional cleaning costs.",
     note: "Results depend on the vessels, data and assumptions studied; they are not a guarantee of operational savings.",
-    imageIds: [],
+    imageIds: ["diagram-savings"],
     paperLink: true,
   },
   {
@@ -124,7 +167,7 @@ const FEATURES: Feature[] = [
     menuLabel: "Data requirements and access",
     originalTitle: "Data requirements and access",
     body: "The current source for the weather and marine data limits the amount of data we can download and is only available for non-commercial purposes.",
-    imageIds: [],
+    imageIds: ["diagram-data"],
     action: {
       label: "Contact us to discuss access",
       subject: "SeaFlint enquiry — Data requirements and access",
@@ -157,7 +200,7 @@ export default function Platform() {
     if (window.location.hash.replace("#", "") === "about") setAboutOpen(true);
   }, []);
 
-  const currentImages = galleryMode ? IMAGES : feature.imageIds.map(imageById);
+  const currentImages = galleryMode ? SCREENSHOTS : feature.imageIds.map(imageById);
   const currentIdx = galleryMode ? galleryIdx : featureIdx;
   const setCurrentIdx = galleryMode ? setGalleryIdx : setFeatureIdx;
   const currentImage = currentImages[Math.min(currentIdx, currentImages.length - 1)];
@@ -266,7 +309,7 @@ export default function Platform() {
           <p className="flex items-center gap-1.5 text-sm text-navy/70" aria-live="polite">
             <span className="material-symbols-outlined text-lg text-cyan-dark">check_circle</span>
             {galleryMode ? (
-              <>All screenshots — {IMAGES.length} images</>
+              <>All screenshots — {SCREENSHOTS.length} images</>
             ) : (
               <>
                 Selected: <span className="font-bold text-navy">{feature.originalTitle}</span>
@@ -320,14 +363,25 @@ export default function Platform() {
             {currentImages.length > 0 && currentImage ? (
               <>
                 <div className="relative mx-auto flex aspect-[16/9] w-full items-center justify-center overflow-hidden rounded-xl border border-navy/10 bg-white">
-                  <Image
-                    src={currentImage.src}
-                    alt={currentImage.alt}
-                    width={currentImage.w}
-                    height={currentImage.h}
-                    sizes="(max-width: 1024px) 100vw, 60vw"
-                    className="h-full w-full object-contain"
-                  />
+                  {currentImage.diagram ? (
+                    // SVG diagrams are already vector; next/image would need dangerouslyAllowSVG.
+                    <img
+                      src={currentImage.src}
+                      alt={currentImage.alt}
+                      width={currentImage.w}
+                      height={currentImage.h}
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <Image
+                      src={currentImage.src}
+                      alt={currentImage.alt}
+                      width={currentImage.w}
+                      height={currentImage.h}
+                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      className="h-full w-full object-contain"
+                    />
+                  )}
                 </div>
                 <div className="mt-4 flex items-center justify-between gap-3">
                   <button

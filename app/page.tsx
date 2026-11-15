@@ -1,4 +1,5 @@
 import RevealObserver from "@/components/RevealObserver";
+import HashScroll from "@/components/HashScroll";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Platform from "@/components/Platform";
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <>
       <RevealObserver />
+      <HashScroll />
       <a
         href="#platform"
         className="skip-link rounded-full bg-cyan px-5 py-3 text-sm font-bold text-navy"

@@ -2,28 +2,24 @@ import { mailto } from "./site";
 
 const CARDS = [
   {
-    icon: "factory",
     title: "Explore industry applications",
     body: "Discuss operational needs and potential pilot projects.",
     action: "Discuss a pilot",
     subject: "SeaFlint enquiry — Industry applications and pilots",
   },
   {
-    icon: "school",
     title: "Develop research together",
     body: "Connect on methods, maritime applications and future funding proposals.",
     action: "Explore collaboration",
     subject: "SeaFlint enquiry — Research collaboration",
   },
   {
-    icon: "database",
     title: "Contribute vessel data",
     body: "Discuss suitable datasets, permissions and a research partnership.",
     action: "Discuss data collaboration",
     subject: "SeaFlint enquiry — Data collaboration",
   },
   {
-    icon: "science",
     title: "Request to test SeaFlint",
     body: "Tell us about your intended use and interest in evaluating the tool.",
     action: "Request testing access",
@@ -47,9 +43,6 @@ export default function Collaborate() {
                 i % 2 === 1 ? "delay-1" : ""
               }`}
             >
-              <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-navy text-cyan">
-                <span className="material-symbols-outlined">{card.icon}</span>
-              </span>
               <h3 className="font-h3 text-[1.3rem] font-bold text-navy">{card.title}</h3>
               <p className="mt-2 text-[0.98rem] leading-relaxed text-navy/70">{card.body}</p>
               <a

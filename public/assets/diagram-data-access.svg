@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="dda-title dda-desc">
+  <title id="dda-title">Schematic: data sources used by SeaFlint and their access conditions</title>
+  <desc id="dda-desc">Vessel sensor data, voyage and port records, and weather and marine data feed the SeaFlint models, which produce cleaning decision support. The weather and marine source is limited to non-commercial use with restricted download volumes.</desc>
+  <rect width="800" height="450" fill="#ffffff"/>
+
+  <!-- input boxes -->
+  <g font-family="Roboto, system-ui, sans-serif">
+    <rect x="40" y="70" width="210" height="62" rx="10" fill="#EAF7FC" stroke="#05283D" stroke-opacity="0.18"/>
+    <text x="145" y="107" text-anchor="middle" font-size="15" font-weight="600" fill="#05283D">Vessel sensor data</text>
+
+    <rect x="40" y="160" width="210" height="62" rx="10" fill="#EAF7FC" stroke="#05283D" stroke-opacity="0.18"/>
+    <text x="145" y="197" text-anchor="middle" font-size="15" font-weight="600" fill="#05283D">Voyage &amp; port records</text>
+
+    <rect x="40" y="250" width="210" height="62" rx="10" fill="#EAF7FC" stroke="#05283D" stroke-opacity="0.18"/>
+    <text x="145" y="287" text-anchor="middle" font-size="15" font-weight="600" fill="#05283D">Weather &amp; marine data</text>
+  </g>
+
+  <!-- arrows into the model -->
+  <g stroke="#00D9E7" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M250,101 L300,101 L300,191 L330,191"/>
+    <path d="M250,191 L330,191"/>
+    <path d="M250,281 L300,281 L300,191 L330,191"/>
+    <path d="M322,185 L330,191 L322,197"/>
+  </g>
+
+  <!-- model block -->
+  <rect x="340" y="140" width="170" height="102" rx="12" fill="#05283D"/>
+  <text x="425" y="182" text-anchor="middle" font-family="Roboto, system-ui, sans-serif"
+        font-size="16" font-weight="700" fill="#ffffff">SeaFlint</text>
+  <text x="425" y="206" text-anchor="middle" font-family="Roboto, system-ui, sans-serif"
+        font-size="16" font-weight="700" fill="#00D9E7">models</text>
+
+  <!-- arrow out -->
+  <g stroke="#00D9E7" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M510,191 L560,191"/>
+    <path d="M552,185 L560,191 L552,197"/>
+  </g>
+
+  <!-- output box -->
+  <rect x="570" y="150" width="195" height="82" rx="10" fill="#ffffff" stroke="#00D9E7" stroke-width="2.5"/>
+  <text x="667" y="183" text-anchor="middle" font-family="Roboto, system-ui, sans-serif"
+        font-size="15" font-weight="700" fill="#05283D">Cleaning decision</text>
+  <text x="667" y="205" text-anchor="middle" font-family="Roboto, system-ui, sans-serif"
+        font-size="15" font-weight="700" fill="#05283D">support</text>
+
+  <!-- restriction note tied to weather source -->
+  <path d="M145,312 L145,344" stroke="#4B6584" stroke-width="2" stroke-dasharray="5 4"/>
+  <rect x="40" y="344" width="420" height="56" rx="10" fill="#FFF3BF"/>
+  <text x="58" y="368" font-family="Roboto, system-ui, sans-serif" font-size="14" font-weight="700" fill="#05283D">
+    Access condition
+  </text>
+  <text x="58" y="389" font-family="Roboto, system-ui, sans-serif" font-size="14" fill="#05283D">
+    Current weather &amp; marine source: non-commercial use, limited downloads
+  </text>
+</svg>
