@@ -17,12 +17,6 @@ const PARTNERS: Partner[] = [
     invert: true,
   },
   {
-    src: "/assets/partner-rsg.png",
-    name: "Research Software Group",
-    href: "https://rsgsoton.net/",
-    lighten: true,
-  },
-  {
     src: "/assets/partner-cs.png",
     name: "Carisbrooke Shipping Ltd",
     href: "https://carisbrooke.co/",
@@ -31,6 +25,12 @@ const PARTNERS: Partner[] = [
     src: "/assets/partner-das.png",
     name: "Decision Analysis Services",
     href: "https://das-int.com/",
+    lighten: true,
+  },
+  {
+    src: "/assets/partner-rsg.png",
+    name: "Research Software Group",
+    href: "https://rsgsoton.net/",
     lighten: true,
   },
 ];
