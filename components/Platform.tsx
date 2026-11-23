@@ -176,12 +176,14 @@ const FEATURES: Feature[] = [
 ];
 
 const DEFAULT_ID = "voyage-visibility";
+const DEFAULT_INDEX = Math.max(0, FEATURES.findIndex((f) => f.id === DEFAULT_ID));
 const imageById = (id: string) => IMAGES.find((i) => i.id === id)!;
 
 export default function Platform() {
-  const [selectedId, setSelectedId] = useState(DEFAULT_ID);
+  // Feature mode is a slideshow across the eight features (one image each);
+  // gallery mode steps through the genuine screenshots instead.
+  const [featureIndex, setFeatureIndex] = useState(DEFAULT_INDEX);
   const [galleryMode, setGalleryMode] = useState(false);
-  const [featureIdx, setFeatureIdx] = useState(0);
   const [galleryIdx, setGalleryIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -190,26 +192,51 @@ export default function Platform() {
   const lightboxCloseRef = useRef<HTMLButtonElement>(null);
   const lightboxRef = useRef<HTMLDivElement>(null);
 
-  const feature = FEATURES.find((f) => f.id === selectedId) ?? FEATURES.find((f) => f.id === DEFAULT_ID)!;
+  const feature = FEATURES[featureIndex];
 
   // Resolve deep links on mount: ?feature=<id> and #about (open disclosure).
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const f = params.get("feature");
-    if (f && FEATURES.some((x) => x.id === f)) setSelectedId(f);
+    const i = FEATURES.findIndex((x) => x.id === f);
+    if (i >= 0) setFeatureIndex(i);
     if (window.location.hash.replace("#", "") === "about") setAboutOpen(true);
   }, []);
 
-  const currentImages = galleryMode ? SCREENSHOTS : feature.imageIds.map(imageById);
-  const currentIdx = galleryMode ? galleryIdx : featureIdx;
-  const setCurrentIdx = galleryMode ? setGalleryIdx : setFeatureIdx;
-  const currentImage = currentImages[Math.min(currentIdx, currentImages.length - 1)];
+  const featureImage = feature.imageIds.length > 0 ? imageById(feature.imageIds[0]) : undefined;
+  const currentImage = galleryMode ? SCREENSHOTS[galleryIdx] : featureImage;
 
   const selectFeature = (id: string) => {
-    setSelectedId(id);
-    setFeatureIdx(0);
+    const i = FEATURES.findIndex((f) => f.id === id);
+    if (i >= 0) setFeatureIndex(i);
     setGalleryMode(false);
   };
+
+  // Slideshow navigation. Features wrap around; gallery images stop at each end.
+  const goPrev = () =>
+    galleryMode
+      ? setGalleryIdx((n) => Math.max(0, n - 1))
+      : setFeatureIndex((n) => (n - 1 + FEATURES.length) % FEATURES.length);
+
+  const goNext = () =>
+    galleryMode
+      ? setGalleryIdx((n) => Math.min(SCREENSHOTS.length - 1, n + 1))
+      : setFeatureIndex((n) => (n + 1) % FEATURES.length);
+
+  const atStart = galleryMode && galleryIdx === 0;
+  const atEnd = galleryMode && galleryIdx === SCREENSHOTS.length - 1;
+
+  // Auto-advance the feature slideshow every 6s. Paused in gallery mode, while
+  // the lightbox is open, or when the user prefers reduced motion. The timer
+  // resets on featureIndex, so manual navigation gets a full interval.
+  useEffect(() => {
+    if (galleryMode || lightbox) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => {
+      setFeatureIndex((n) => (n + 1) % FEATURES.length);
+    }, 6000);
+    return () => window.clearInterval(timer);
+  }, [galleryMode, lightbox, featureIndex]);
 
   // Lightbox: focus management, focus containment and Escape.
   useEffect(() => {
@@ -278,7 +305,7 @@ export default function Platform() {
             </label>
             <select
               id="feature-select"
-              value={galleryMode ? "" : selectedId}
+              value={galleryMode ? "" : feature.id}
               onChange={(e) => selectFeature(e.target.value)}
               className="h-11 rounded-xl border border-navy/15 bg-white px-3 text-sm font-semibold text-navy shadow-sm focus:border-cyan"
             >
@@ -319,16 +346,16 @@ export default function Platform() {
         </div>
 
         {/* Content card */}
-        <div className="grid grid-cols-1 gap-0 overflow-hidden rounded-xl border border-navy/10 bg-white shadow-[0_18px_50px_rgba(5,40,61,0.12)] lg:grid-cols-5 fade-in-up">
-          {/* Left: text (feature mode only) */}
+        <div className="overflow-hidden rounded-xl border border-navy/10 bg-white shadow-[0_18px_50px_rgba(5,40,61,0.12)] fade-in-up">
+          {/* Top: description (feature mode only) */}
           {!galleryMode && (
-            <div className="flex flex-col justify-center gap-4 p-7 lg:col-span-2 lg:p-9">
+            <div className="flex flex-col items-center gap-4 px-6 pb-2 pt-8 text-center md:px-9 md:pt-10">
               <h3 className="font-h3 text-[1.5rem] font-bold leading-tight tracking-[-0.01em] text-navy">
                 {feature.originalTitle}
               </h3>
-              <p className="text-[1rem] leading-relaxed text-navy/75">{feature.body}</p>
+              <p className="max-w-2xl text-[1rem] leading-relaxed text-navy/75">{feature.body}</p>
               {feature.note && (
-                <p className="text-sm leading-relaxed text-navy/55">{feature.note}</p>
+                <p className="max-w-2xl text-sm leading-relaxed text-navy/55">{feature.note}</p>
               )}
               {feature.paperLink && (
                 <a
@@ -354,15 +381,11 @@ export default function Platform() {
             </div>
           )}
 
-          {/* Right: image viewer */}
-          <div
-            className={`flex flex-col bg-pale/60 p-5 sm:p-7 ${
-              galleryMode ? "lg:col-span-5" : "lg:col-span-3"
-            }`}
-          >
-            {currentImages.length > 0 && currentImage ? (
+          {/* Below: image viewer */}
+          <div className="flex flex-col bg-pale/60 p-5 sm:p-7">
+            {currentImage ? (
               <>
-                <div className="relative mx-auto flex aspect-[16/9] w-full items-center justify-center overflow-hidden rounded-xl border border-navy/10 bg-white">
+                <div className="relative mx-auto flex aspect-[16/9] w-full max-w-3xl items-center justify-center overflow-hidden rounded-xl border border-navy/10 bg-white">
                   {currentImage.diagram ? (
                     // SVG diagrams are already vector; next/image would need dangerouslyAllowSVG.
                     <img
@@ -383,13 +406,13 @@ export default function Platform() {
                     />
                   )}
                 </div>
-                <div className="mt-4 flex items-center justify-between gap-3">
+                <div className="mx-auto mt-4 flex w-full max-w-3xl items-center justify-between gap-3">
                   <button
                     type="button"
-                    onClick={() => setCurrentIdx(Math.max(0, currentIdx - 1))}
-                    disabled={currentIdx === 0}
+                    onClick={goPrev}
+                    disabled={atStart}
                     className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-navy/20 bg-white text-navy transition-colors hover:border-cyan disabled:cursor-not-allowed disabled:opacity-35"
-                    aria-label="Previous image"
+                    aria-label={galleryMode ? "Previous image" : "Previous feature"}
                   >
                     <span className="material-symbols-outlined">chevron_left</span>
                   </button>
@@ -397,22 +420,24 @@ export default function Platform() {
                   <div className="min-w-0 flex-1 text-center">
                     <p className="truncate text-sm font-semibold text-navy">{currentImage.title}</p>
                     <p className="text-xs text-navy/60">
-                      Image {currentIdx + 1} of {currentImages.length}
+                      {galleryMode
+                        ? `Image ${galleryIdx + 1} of ${SCREENSHOTS.length}`
+                        : `Feature ${featureIndex + 1} of ${FEATURES.length}`}
                     </p>
                   </div>
 
                   <button
                     type="button"
-                    onClick={() => setCurrentIdx(Math.min(currentImages.length - 1, currentIdx + 1))}
-                    disabled={currentIdx === currentImages.length - 1}
+                    onClick={goNext}
+                    disabled={atEnd}
                     className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-navy/20 bg-white text-navy transition-colors hover:border-cyan disabled:cursor-not-allowed disabled:opacity-35"
-                    aria-label="Next image"
+                    aria-label={galleryMode ? "Next image" : "Next feature"}
                   >
                     <span className="material-symbols-outlined">chevron_right</span>
                   </button>
                 </div>
 
-                <p className="mt-3 text-center text-sm text-navy/65">{currentImage.caption}</p>
+                <p className="mx-auto mt-3 max-w-3xl text-center text-sm text-navy/65">{currentImage.caption}</p>
 
                 <button
                   ref={viewLargerRef}
@@ -423,6 +448,25 @@ export default function Platform() {
                   <span className="material-symbols-outlined text-base">zoom_in</span>
                   View larger
                 </button>
+
+                {!galleryMode && (
+                  <div className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-2">
+                    {FEATURES.map((f, i) => (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => setFeatureIndex(i)}
+                        aria-label={`Show ${f.menuLabel}`}
+                        aria-current={i === featureIndex ? "true" : undefined}
+                        className={`h-2.5 rounded-full transition-all ${
+                          i === featureIndex
+                            ? "w-7 bg-cyan-dark"
+                            : "w-2.5 bg-navy/25 hover:bg-navy/45"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
               </>
             ) : (
               <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-navy/15 bg-white/60 p-8 text-center">

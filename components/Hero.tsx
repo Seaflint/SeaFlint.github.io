@@ -1,35 +1,39 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+// The hero background video is disabled for now — the still image is used instead.
+// To restore it: uncomment the react import, the state/effect block, the <video>
+// element and the pause/play control, then remove the <Image> that replaced it.
+// import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { mailto } from "./site";
 
 export default function Hero() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [playing, setPlaying] = useState(true);
+  // const videoRef = useRef<HTMLVideoElement>(null);
+  // const [playing, setPlaying] = useState(true);
 
-  // Respect reduced-motion: don't autoplay, show the poster still.
-  useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const video = videoRef.current;
-    if (!video) return;
-    if (prefersReduced) {
-      video.removeAttribute("autoplay");
-      video.pause();
-      setPlaying(false);
-    }
-  }, []);
+  // // Respect reduced-motion: don't autoplay, show the poster still.
+  // useEffect(() => {
+  //   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  //   const video = videoRef.current;
+  //   if (!video) return;
+  //   if (prefersReduced) {
+  //     video.removeAttribute("autoplay");
+  //     video.pause();
+  //     setPlaying(false);
+  //   }
+  // }, []);
 
-  const togglePlay = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      void video.play();
-      setPlaying(true);
-    } else {
-      video.pause();
-      setPlaying(false);
-    }
-  };
+  // const togglePlay = () => {
+  //   const video = videoRef.current;
+  //   if (!video) return;
+  //   if (video.paused) {
+  //     void video.play();
+  //     setPlaying(true);
+  //   } else {
+  //     video.pause();
+  //     setPlaying(false);
+  //   }
+  // };
 
   const scrollToPlatform = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -46,6 +50,7 @@ export default function Hero() {
       data-screen-label="Hero"
     >
       <div className="absolute inset-0 z-0">
+        {/* Background video disabled — still image only.
         <video
           ref={videoRef}
           className="absolute inset-0 h-full w-full scale-125 object-cover object-center translate-x-[10%]"
@@ -57,6 +62,16 @@ export default function Hero() {
           playsInline
           preload="metadata"
           aria-hidden="true"
+        />
+        */}
+        <Image
+          src="/assets/hero_bg2.jpg"
+          alt=""
+          aria-hidden="true"
+          fill
+          priority
+          sizes="100vw"
+          className="scale-125 object-cover object-center translate-x-[10%]"
         />
         {/* Navy scrim — stronger on the left where the text sits, especially on mobile */}
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,40,61,0.92)_0%,rgba(5,40,61,0.72)_38%,rgba(5,40,61,0.25)_72%,rgba(5,40,61,0.1)_100%)]" />
@@ -98,7 +113,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Video pause/play control */}
+      {/* Video pause/play control — not needed while the background is a still image.
       <button
         type="button"
         onClick={togglePlay}
@@ -107,6 +122,7 @@ export default function Hero() {
       >
         <span className="material-symbols-outlined text-xl">{playing ? "pause" : "play_arrow"}</span>
       </button>
+      */}
     </section>
   );
 }
